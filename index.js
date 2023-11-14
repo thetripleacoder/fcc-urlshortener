@@ -10,7 +10,7 @@ let urls = [];
 
 let shortUrlNo = 1;
 
-app.use(cors());
+app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 204
 
 app.use('/public', express.static(`${process.cwd()}/public`));
 
