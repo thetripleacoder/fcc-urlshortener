@@ -27,14 +27,20 @@ app.get('/api/hello', function (req, res) {
 });
 
 app.post('/api/shorturl', function (req, res) {
-  let newUrl = {
-    original_url: req.body.url,
-    short_url: shortUrlNo,
+  let isValidUrl = /http:\/\/www.*.com/.test(req.body.url);
+  console.log(isValidUrl);
+  if (isValidUrl) {
+    let newUrl = {
+      original_url: req.body.url,
+      short_url: shortUrlNo,
+    }
+    urls.push(newUrl);
+    res.send(newUrl);
+    shortUrlNo++;
+    console.log(urls)
+  } else {
+    res.send ({ error: 'invalid url' });
   }
-  urls.push(newUrl);
-  res.send(newUrl);
-  shortUrlNo++;
-  console.log(urls)
 });
 
 app.get('/api/shorturl/:short_url', function (req, res) {
