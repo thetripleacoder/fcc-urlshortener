@@ -27,21 +27,6 @@ app.get('/api/hello', function (req, res) {
 });
 
 app.post('/api/shorturl', function (req, res) {
-  // dns.lookup(req.body.url, function (err) {
-  //   if (err) {
-  //     console.log(err)
-  //     res.send({ error: 'invalid url', err: err })
-  //   } else {
-  //     let newUrl = {
-  //       original_url: req.body.url,
-  //       short_url: shortUrlNo,
-  //     }
-  //     urls.push = newUrl;
-  //     res.send(newUrl);
-  //     shortUrlNo++;
-  //     console.log(urls)
-  //   }
-  // });
   let newUrl = {
     original_url: req.body.url,
     short_url: shortUrlNo,
