@@ -2,7 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
-let bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
+const dns = require('dns');
 
 // Basic Configuration
 const port = process.env.PORT || 3000;
@@ -27,20 +28,21 @@ app.get('/api/hello', function (req, res) {
 });
 
 app.post('/api/shorturl', function (req, res) {
-  let isValidUrl = /http:\/\/www.*.com/.test(req.body.url);
-  console.log(isValidUrl);
-  if (isValidUrl) {
-    let newUrl = {
-      original_url: req.body.url,
-      short_url: shortUrlNo,
+  let isValidUrl = /(https?:\/\/w{0,3}.*.[a-z]{3})/.test(req.body.url);
+  dns.lookup(req.body.url, (err, value) => {
+    console.log(err, value)
+    if (err && !isValidUrl) {
+      res.send ({ error: 'invalid url' });
+    } else {
+      let newUrl = {
+        original_url: req.body.url,
+        short_url: shortUrlNo,
+      }
+      urls.push(newUrl);
+      res.send(newUrl);
+      shortUrlNo++;
     }
-    urls.push(newUrl);
-    res.send(newUrl);
-    shortUrlNo++;
-    console.log(urls)
-  } else {
-    res.send ({ error: 'invalid url' });
-  }
+  })
 });
 
 app.get('/api/shorturl/:short_url', function (req, res) {
